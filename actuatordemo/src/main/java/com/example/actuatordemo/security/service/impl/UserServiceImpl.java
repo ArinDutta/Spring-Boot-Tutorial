@@ -2,16 +2,16 @@ package com.example.actuatordemo.security.service.impl;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.example.actuatordemo.security.model.User;
 import com.example.actuatordemo.security.service.UserService;
-
+@Service
 public class UserServiceImpl implements UserService {
 	
 	@Value("#{${users}}")
@@ -22,18 +22,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUser(String name) {
-		Optional<User> optionalUser=userMap.entrySet()
+		return userMap.entrySet()
 		.stream()
 		.filter(e -> e.getKey().equals(name))
 		.map(m -> {
 			User user=new User();
 			user.setUserName(m.getKey());
-			user.setUserName(m.getValue());
+			user.setUserPassword(m.getValue());
+			user.setUserRole(getRoles(name));
 			return user;
-		}).findAny();
-		User u=optionalUser.orElseThrow(() ->new UsernameNotFoundException("User not found"));
-		u.setUserRole(getRoles(name));
-		return u;
+		}).findAny().orElseThrow(() ->new UsernameNotFoundException("User not found"));
 	}
 
 	@Override
