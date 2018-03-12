@@ -17,6 +17,12 @@ public class User implements Serializable{
 		super();
 	}
 	
+	public User(User u) {
+		this.userName=u.userName;
+		this.userPassword=u.userPassword;
+		this.userRole=u.userRole;
+	}
+	
 	public String getUserName() {
 		return userName;
 	}
