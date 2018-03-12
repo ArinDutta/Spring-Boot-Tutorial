@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 public class CustomSecurityConfig  extends WebSecurityConfigurerAdapter{
@@ -24,7 +25,26 @@ public class CustomSecurityConfig  extends WebSecurityConfigurerAdapter{
 	}
 	
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);
+		auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
+	}
+
+	private PasswordEncoder getPasswordEncoder() {
+		return new PasswordEncoder() {
+			
+			@Override
+			public boolean matches(CharSequence rawPassword, String encodedPassword) {
+				if(null != rawPassword && rawPassword.equals(encodedPassword)) {
+					return true;
+				}
+				return false;
+			}
+			
+			@Override
+			public String encode(CharSequence rawPassword) {
+				// TODO Auto-generated method stub
+				return rawPassword.toString();
+			}
+		};
 	}
 
 }
