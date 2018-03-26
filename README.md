@@ -1,8 +1,9 @@
 # Spring-Boot-Tutorial
+The goal of this projects is to implement properties file driven Spring Security.
 
 
 Properties Files:- 
-users={"arin":"password","john":"password2","Lura":"password"}
+users={"arin":"password","john":"password2","Lura":"password"} 
 usersroles={"arin":"DEVELOPER,ADMIN","john":"ADMIN","Lura":"DEVELOPER"}
 
 REST URL :-
